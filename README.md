@@ -1,8 +1,8 @@
 Note: 
-Personal fork of dwm (https://dwm.suckless.org/), based on version 6.1. 
+Personal fork of dwm (https://dwm.suckless.org/), based on version 6.1.   
 Patches: 
 * systray
-* view adjacent
+* view adjacent  
 Adjustment:
 * Color
 * Font
