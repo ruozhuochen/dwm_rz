@@ -4,7 +4,7 @@
 static const char *fonts[] = {
         "terminus:pixelsize=10:antialias=true:autohint=true"
 };
-static const char dmenufont[]       = "terminus:size=10";  
+static const char dmenufont[]       = "terminus:pixelsize=10:antialias=true:autohint=true";  
 static const char normbordercolor[] = "#111111"; /* 444444 originally */
 static const char normbgcolor[]     = "#222222";
 static const char normfgcolor[]     = "#bbbbbb";
