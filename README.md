@@ -25,6 +25,7 @@ libx11-dev
 libxau-dev
 libxinerama-dev
 libxft-dev
+libxrandr-dev  
 
 
 Optional
