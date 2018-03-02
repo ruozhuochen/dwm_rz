@@ -20,6 +20,13 @@ static const int showsystray        = 1;        /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 
+/*   Display modes of the tab bar: never shown, always shown, shown only in */
+/*   monocle mode in presence of several windows.                           */
+/*   Modes after showtab_nmodes are disabled                                */
+enum showtab_modes { showtab_never, showtab_auto, showtab_nmodes, showtab_always};
+static const int showtab            = showtab_auto; /* Default tab bar show mode */
+static const int toptab            = False;    /* False means bottom tab bar */
+
 static void view_adjacent(const Arg *arg);
 static const char *upvol[]   = { "amixer", "set", "Master", "3+",     NULL };
 static const char *downvol[] = { "amixer", "set", "Master", "3-",     NULL };
@@ -89,6 +96,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_p,      spawn,          {.v = xtermcmd } },
 	{ MODKEY,		        XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY,                       XK_w,      tabmode,        {-1} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_i,      incnmaster,     {.i = +1 } },
@@ -152,6 +160,7 @@ static Button buttons[] = {
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	{ ClkTabBar,            0,              Button1,        focuswin,       {0} },
 };
 
 void
