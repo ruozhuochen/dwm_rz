@@ -1,11 +1,12 @@
-Note: 
+Note:
 Personal fork of dwm (https://dwm.suckless.org/), based on version 6.1.   
 
-Patches: 
+Patches:
 * systray
 * tab
-* view adjacent  
- 
+* view adjacent
+* hide vacant tags  
+
 Adjustment:
 * Color
 * Font
