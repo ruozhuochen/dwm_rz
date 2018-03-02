@@ -1,0 +1,38 @@
+#!/bin/bash
+
+#---------- Variables ---------------------
+basefolder="/home/rchen"
+wallpapers="${basefolder}/Pictures/wallpapers"
+
+
+
+#---------- Check if missing --------------
+feh -v
+
+if [ $? -ne 0 ]; then
+	echo "You need to install feh first."
+	exit 1
+fi
+
+if [ ! -d "${wallpapers}" ]; then
+	echo "You do not have ${wallpapers}"
+	exit 1
+fi
+
+
+#---------- Main --------------------------
+
+while true; do
+
+        lastfile=`ls -l ${wallpapers}/*.jpg | wc -l`
+	i=$(( ( RANDOM % ${lastfile} )  + 1 ))
+
+	if [ -f ${wallpapers}/$i.jpg ]; then
+	    rm ${basefolder}/wallpaper.jpg
+    	    ln -s ${wallpapers}/$i.jpg ${basefolder}/wallpaper.jpg
+	    feh --bg-fill ${basefolder}/wallpaper.jpg & 
+    	    sleep 1200
+	else
+            echo "File ${wallpapers}/$i.jpg not exist!!!"
+	fi
+done

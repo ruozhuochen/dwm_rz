@@ -1,0 +1,82 @@
+#!/bin/bash
+# colorize.sh
+
+batteryThreshold=20
+cpuThreshold=85
+memThreshold=85
+diskThreshold=85
+tempThreshold=75
+sleepTime=30
+
+cpu=
+prevtotal=0
+previdle=0
+check_cpu() {
+    local _cpu a b c idle rest
+    read _cpu a b c idle rest < /proc/stat
+    local total=$((a + b + c + idle))
+    local intervaltotal=$((total - prevtotal))
+    test $prevtotal -ne 0 \
+        && _cpu=$((100 * (intervaltotal - (idle - previdle)) / intervaltotal)) \
+        || _cpu=0
+    prevtotal=$total
+    previdle=$idle
+    ret=$_cpu
+    cpu=$_cpu
+    if [ ${cpu} -gt ${cpuThreshold} ]
+    then
+        notify-send "CPU WARNING" "CPU level is ${cpu}%, please check your usage now."  -t 10000
+    fi
+}
+
+check_temp() {
+    local _temp
+    local f=$(find /sys/class/thermal -maxdepth 1 -name 'thermal_zone*' | sort -r | head -n 1)
+    read _temp < "${f}/temp"
+    #read _temp < /sys/class/thermal/thermal_zone0/temp
+    #read _temp < /sys/class/thermal/thermal_zone5/temp
+    _temp=$((_temp / 1000))
+    if [ ${_temp} -gt ${tempThreshold} ]
+    then
+        notify-send "Temperature WARNING" "Temperature is around ${_temp} C, please check your usage now."  -t 10000
+    fi
+}
+
+check_battery() {
+    local battery=`acpi -b | grep -P -o '[0-9]+(?=%)'`
+    local charging=`acpi -b | grep -o  "Charging"`
+
+    if [ ${battery} -le ${batteryThreshold} ]
+    then 
+        if [ "${charging}" != "Charging" ]
+        then	
+            notify-send "Battery WARNING" "Battery level is ${battery}%, please connect to power now." -i battery -t 10000
+        fi
+    fi
+}
+
+check_mem() {
+    local max cur type size kb _mem
+
+    while read type size kb; do
+        test $type = 'MemTotal:' && max=$size && cur=$max
+        test $type = 'MemFree:' && cur=$((cur - size))
+        test $type = 'Buffers:' && cur=$((cur - size))
+        test $type = 'Cached:' && cur=$((cur - size))
+    done < /proc/meminfo
+
+    _mem=$((cur * 100 / max)) 
+    if [ ${_mem} -gt ${memThreshold} ]
+    then
+        notify-send "Memory WARNING" "Memory is around ${_mem}%, please check your usage now."  -t 10000
+    fi
+}
+
+
+while true; do
+    check_battery
+    check_cpu
+    check_temp
+    check_mem
+    sleep ${sleepTime}
+done 

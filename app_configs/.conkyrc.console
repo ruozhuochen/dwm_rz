@@ -1,0 +1,15 @@
+out_to_x no
+background no
+out_to_console yes
+update_interval 2
+total_run_times 0
+use_spacer left 
+uppercase true
+
+TEXT
+NET ${downspeedf enp3s0}KB | \
+CPU ${cpu cpu1}% ${platform coretemp.0/hwmon/hwmon1 temp 1}C ${freq_g}G | \
+RAM $memperc% | \
+DSK ${fs_free /} ${diskio} | \
+VOL ${exec amixer get Master | awk -vORS='' '/Mono:/ {print($6$4)}' | sed -e "s/\]\[/ /g" | sed -e "s/\[\|\]//g" } | \
+DAY ${time %d %H:%M} |
