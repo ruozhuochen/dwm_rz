@@ -1,6 +1,8 @@
 Note:
 Personal fork of dwm (https://dwm.suckless.org/), based on version 6.1.   
 
+![screenshot](https://raw.githubusercontent.com/ruozhuochen/dwm_rz/master/snapshot.png)
+
 Patches:
 * systray
 * tab
