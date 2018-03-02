@@ -3,6 +3,7 @@ Personal fork of dwm (https://dwm.suckless.org/), based on version 6.1.
 
 Patches: 
 * systray
+* tab
 * view adjacent  
  
 Adjustment:
