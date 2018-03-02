@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Name=DWM
+Comment=Use this session to run dwm as your desktop environment /usr/share/xsessions
+Exec=/home/rchen/bin/startdwm
+Icon=
+Type=Application
+DesktopNames=dwm
