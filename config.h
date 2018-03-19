@@ -4,7 +4,7 @@
 static const char *fonts[] = {
         "terminus:pixelsize=10:antialias=true:autohint=true"
 };
-static const char dmenufont[]       = "terminus:pixelsize=10:antialias=true:autohint=true";
+static const char dmenufont[]       = "terminus:pixelsize=10:antialias=true:autohint=true";  
 static const char normbordercolor[] = "#111111"; /* 444444 originally */
 static const char normbgcolor[]     = "#222222";
 static const char normfgcolor[]     = "#bbbbbb";
@@ -19,7 +19,6 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const int showsystray        = 1;        /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const int hidevacanttags     = 1;        /* 0 means show them */
 
 /*   Display modes of the tab bar: never shown, always shown, shown only in */
 /*   monocle mode in presence of several windows.                           */
