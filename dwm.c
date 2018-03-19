@@ -481,9 +481,21 @@ buttonpress(XEvent *e)
 	}
 	if (ev->window == selmon->barwin) {
 		i = x = 0;
-		do
-			x += TEXTW(tags[i]);
-		while (ev->x >= x && ++i < LENGTH(tags));
+    if (hidevacanttags) {
+        unsigned int occ = 0;
+		    for(c = m->clients; c; c = c->next)
+			     occ |= c->tags;
+		    do {
+			       /* do not reserve space for vacant tags */
+			     if(!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
+				       continue;
+ 			     x += TEXTW(tags[i]);
+		    } while (ev->x >= x && ++i < LENGTH(tags));
+    } else {
+  		do
+  			x += TEXTW(tags[i]);
+  		while (ev->x >= x && ++i < LENGTH(tags));
+    }
 		if (i < LENGTH(tags)) {
 			click = ClkTagBar;
 			arg.ui = 1 << i;
@@ -849,11 +861,21 @@ drawbar(Monitor *m)
 	}
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
+    if (hidevacanttags) {
+      	/* do not draw vacant tags */
+		    if(!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
+			     continue;
+    }
 		w = TEXTW(tags[i]);
 		drw_setscheme(drw, m->tagset[m->seltags] & 1 << i ? &scheme[SchemeSel] : &scheme[SchemeNorm]);
 		drw_text(drw, x, 0, w, bh, tags[i], urg & 1 << i);
-		drw_rect(drw, x + 1, 1, dx, dx, m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
+    if (hidevacanttags) {
+      drw_rect(drw, x + 1, 1, dx, dx, m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
+               0, urg & 1 << i);
+    } else {
+      drw_rect(drw, x + 1, 1, dx, dx, m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
 		           occ & 1 << i, urg & 1 << i);
+    }
 		x += w;
 	}
 	w = blw = TEXTW(m->ltsymbol);
@@ -1107,7 +1129,7 @@ focusstack(const Arg *arg)
 		restack(selmon);
 	}
 }
- 
+
 void
 focuswin(const Arg* arg){
   int iwin = arg->i;
