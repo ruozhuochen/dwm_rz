@@ -1,0 +1,9 @@
+DWM_CMD=dwm
+while true
+    do
+    if [ -f /home/rchen/.LaptopMonitor]; then
+	DWM_CMD=dwm-laptop
+    fi 
+    ${DWM_CMD} 2> /home/rchen/.dwm.log
+    /home/rchen/.dwm/autostart.sh
+done
