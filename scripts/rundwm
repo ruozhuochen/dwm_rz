@@ -3,6 +3,8 @@ while true
     do
     if [ -f /home/rchen/.LaptopMonitor]; then
 	DWM_CMD=dwm-laptop
+    else
+    	DWM_CMD=dwm
     fi 
     ${DWM_CMD} 2> /home/rchen/.dwm.log
     /home/rchen/.dwm/autostart.sh
